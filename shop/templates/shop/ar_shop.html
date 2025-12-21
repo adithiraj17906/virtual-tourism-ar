@@ -1,0 +1,215 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AR Shop - ARound the World</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+            color: #2c3e50;
+        }
+
+        header {
+            background: linear-gradient(to right, #2c3e50, #3498db);
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            color: #fff;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .logo i {
+            margin-right: 10px;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        nav a, nav form button {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            background: none;
+            border: none;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            padding: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        nav a:hover,
+        nav form button:hover {
+            opacity: 0.8;
+        }
+
+        nav form {
+            display: inline;
+        }
+
+        main {
+            padding: 40px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .products-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .product-card {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 10px 15px rgba(0,0,0,0.05);
+            overflow: hidden;
+            width: 320px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 25px rgba(0,0,0,0.1);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+        }
+
+        .product-content {
+            padding: 20px;
+        }
+
+        .product-content h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+
+        .product-content p {
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .price-rating {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .price {
+            color: #27ae60;
+            font-weight: bold;
+        }
+
+        .rating {
+            color: #f1c40f;
+        }
+
+        .product-content button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            background: linear-gradient(to right, #3498db, #2980b9);
+            color: white;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .product-content button:hover {
+            background: linear-gradient(to right, #2980b9, #2471a3);
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #2c3e50;
+            color: white;
+            margin-top: 60px;
+        }
+    </style>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<header>
+    <div class="logo">
+        <i class="fas fa-globe"></i> ARound the World
+    </div>
+    <nav>
+        <a href="{% url 'product_list' %}">Experience</a>
+        <a href="{% url 'ar_shop' %}">AR Shop</a>
+        <a href="{% url 'about' %}">About</a>
+        <a href="{% url 'contact' %}">Contact</a>
+        <a href="{% url 'cart' %}">Cart</a>
+
+        {% if user.is_authenticated %}
+        <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Logout</button>
+        </form>
+        {% else %}
+        <a href="{% url 'login' %}">Login</a>
+        {% endif %}
+    </nav>
+</header>
+
+<main>
+    <h2 style="text-align:center; margin-bottom: 40px;">Explore your needs in AR</h2>
+    <h2 style="text-align:center; margin-bottom: 40px;">Experience the real-time objects</h2>
+    <section class="products-container">
+        {% if products %}
+            {% for product in products %}
+                <a href="{% url 'ar_product_detail' product.pk %}" class="product-card">
+                    <img src="{{ product.image.url }}" alt="{{ product.title }}">
+                    <div class="product-content">
+                        <h3>{{ product.title }}</h3>
+                        <p>{{ product.description }}</p>
+                        <div class="price-rating">
+                            <span class="price">₹{{ product.price }}</span>
+                            <span class="rating">⭐ {{ product.review }}/5</span>
+                        </div>
+                        <button>Experience in AR</button>
+                    </div>
+                </a>
+            {% endfor %}
+        {% else %}
+            <p>No AR products available at the moment.</p>
+        {% endif %}
+    </section>
+</main>
+
+<footer>
+    &copy; 2025 ARound the World. All rights reserved.
+</footer>
+
+</body>
+</html>
