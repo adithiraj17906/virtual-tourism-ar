@@ -49,24 +49,31 @@ def contact(request):
 
 def add_to_cart(request, product_id):
     if request.method == 'POST':
-
-        try:
-            selected_product = Product.objects.get(id=product_id)
-            ar_product = None
-            is_ar = False
-        except Product.DoesNotExist:
+        # Check if this is an AR product or regular product
+        product_type = request.POST.get('product_type', 'regular')
+        
+        if product_type == 'ar':
+            # This is an AR product
             ar_product = get_object_or_404(ARProduct, id=product_id)
             selected_product = None
             is_ar = True
+            product_name = ar_product.title
+            product_price = ar_product.price
+        else:
+            # This is a regular product
+            selected_product = get_object_or_404(Product, id=product_id)
+            ar_product = None
+            is_ar = False
+            product_name = selected_product.name
+            product_price = selected_product.price
 
-        date = request.POST.get('date')
+        date = request.POST.get('date_selected') or request.POST.get('date')
         time_slot = request.POST.get('time_slot')
         quantity = int(request.POST.get('quantity', 1))
 
         if not request.session.session_key:
             request.session.create()
         session_id = request.session.session_key
-
 
         cart_item, created = CartItem.objects.get_or_create(
             session_id=session_id,
@@ -76,22 +83,22 @@ def add_to_cart(request, product_id):
             ar_product=ar_product,
             defaults={
                 'quantity': quantity,
-                'total_price': (selected_product or ar_product).price * quantity
+                'total_price': product_price * quantity
             }
         )
 
         if not created:
             cart_item.quantity += quantity
-            cart_item.total_price = (selected_product or ar_product).price * cart_item.quantity
+            cart_item.total_price = product_price * cart_item.quantity
             cart_item.save()
 
         messages.success(
             request,
-            f"{(selected_product or ar_product).title} added to cart successfully!"
+            f"{product_name} added to cart successfully!"
         )
         return redirect('cart')
 
-
+    # GET request - redirect back to product detail
     try:
         Product.objects.get(id=product_id)
         return redirect('product_detail', pk=product_id)
