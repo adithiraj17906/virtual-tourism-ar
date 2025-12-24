@@ -1,254 +1,145 @@
+{% extends 'shop/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us - ARound the World</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+
+{% block title %}Contact Us - ARound the World{% endblock %}
+
+{% block extra_css %}
+<style>
+    .contact-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+        margin-top: 40px;
+    }
+
+    .contact-info,
+    .contact-form {
+        background: white;
+        padding: 40px;
+        border-radius: 20px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    h2 {
+        color: #2c3e50;
+        font-size: 2rem;
+        margin-bottom: 25px;
+        position: relative;
+        padding-bottom: 10px;
+    }
+
+    h2::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(135deg, #3498db, #2980b9);
+    }
+
+    .contact-info p {
+        margin-bottom: 20px;
+        font-size: 1.1rem;
+        color: #636e72;
+    }
+
+    .contact-method {
+        margin-bottom: 25px;
+    }
+
+    .contact-method h3 {
+        color: #2c3e50;
+        margin-bottom: 10px;
+        font-size: 1.25rem;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    label {
+        margin: 10px 0 5px;
+        color: #2c3e50;
+        font-weight: 500;
+    }
+
+    input,
+    textarea {
+        padding: 12px;
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    input:focus,
+    textarea:focus {
+        border-color: #3498db;
+        outline: none;
+        box-shadow: 0 0 10px rgba(52, 152, 219, 0.1);
+    }
+
+    textarea {
+        min-height: 150px;
+        resize: vertical;
+    }
+
+    .btn-send {
+        background: linear-gradient(135deg, #3498db, #2980b9);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        padding: 15px 30px;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        align-self: flex-start;
+        font-weight: 500;
+    }
+
+    .btn-send:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    @media (max-width: 992px) {
+        .contact-container {
+            grid-template-columns: 1fr;
         }
+    }
+</style>
+{% endblock %}
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f8f9fa;
-            color: #2d3436;
-            line-height: 1.6;
-        }
-
-        header {
-            background: linear-gradient(to right, #2c3e50, #3498db);
-            color: white;
-            padding: 20px 40px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            font-size: 1.5rem;
-            font-weight: 600;
-        }
-
-        nav {
-            display: flex;
-            align-items: center;
-        }
-
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin-left: 30px;
-            font-weight: 500;
-            transition: color 0.3s ease;
-        }
-
-        nav a:hover {
-            color: #ecf0f1;
-        }
-
-        .custom-logout-btn {
-            background: linear-gradient(135deg, #3498db, #2980b9);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            padding: 10px 20px;
-            font-size: 1rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-left: 30px;
-        }
-
-        .custom-logout-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        main {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 20px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-        }
-
-        .contact-info, .contact-form {
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
-        }
-
-        h2 {
-            color: #2c3e50;
-            font-size: 2rem;
-            margin-bottom: 25px;
-            position: relative;
-            padding-bottom: 10px;
-        }
-
-        h2::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 60px;
-            height: 3px;
-            background: linear-gradient(135deg, #3498db, #2980b9);
-        }
-
-        .contact-info p {
-            margin-bottom: 20px;
-            font-size: 1.1rem;
-            color: #636e72;
-        }
-
-        .contact-method {
-            margin-bottom: 25px;
-        }
-
-        .contact-method h3 {
-            color: #2c3e50;
-            margin-bottom: 10px;
-        }
-
-        form {
-            display: flex;
-            flex-direction: column;
-        }
-
-        label {
-            margin: 10px 0 5px;
-            color: #2c3e50;
-            font-weight: 500;
-        }
-
-        input,
-        textarea {
-            padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        input:focus,
-        textarea:focus {
-            border-color: #3498db;
-            outline: none;
-            box-shadow: 0 0 10px rgba(52, 152, 219, 0.1);
-        }
-
-        textarea {
-            min-height: 150px;
-            resize: vertical;
-        }
-
-        button[type="submit"]:not(.custom-logout-btn) {
-            background: linear-gradient(135deg, #3498db, #2980b9);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            padding: 15px 30px;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            align-self: flex-start;
-            font-weight: 500;
-        }
-
-        button[type="submit"]:hover:not(.custom-logout-btn) {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        footer {
-            background-color: #2c3e50;
-            color: #ffffff;
-            padding: 30px;
-            text-align: center;
-            margin-top: 50px;
-        }
-
-        @media (max-width: 768px) {
-            header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            nav {
-                margin-top: 10px;
-                flex-wrap: wrap;
-                gap: 15px;
-            }
-
-            nav a {
-                margin-left: 0;
-            }
-
-            main {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <div class="logo">
-            <span>ARound the World</span>
-        </div>
-        <nav>
-            <a href="{% url 'product_list' %}">Experience</a>
-            <a href="{% url 'ar_shop' %}">AR Shop</a>
-            <a href="{% url 'about' %}">About</a>
-            <a href="{% url 'contact' %}">Contact</a>
-            <a href="{% url 'cart' %}">Cart</a>
-            {% if user.is_authenticated %}
-            <form action="{% url 'logout' %}" method="post">
-                {% csrf_token %}
-                <button type="submit" class="custom-logout-btn">Logout</button>
-            </form>
-            {% else %}
-            <a href="{% url 'login' %}">Login</a>
-            {% endif %}
-        </nav>
-    </header>
-
-    <main>
+{% block content %}
+<div class="container py-5">
+    <div class="contact-container">
         <div class="contact-info">
             <h2>Get in Touch</h2>
             <p>Have questions about our AR experiences or need support? We're here to help!</p>
 
             <div class="contact-method">
-                <h3>📍 Address</h3>
-                <p>Hyderabad</p>
+                <h3><i class="fas fa-map-marker-alt text-primary me-2"></i>Address</h3>
+                <p>Hyderabad, India</p>
             </div>
 
             <div class="contact-method">
-                <h3>📞 Phone</h3>
+                <h3><i class="fas fa-phone text-primary me-2"></i>Phone</h3>
                 <p>+91 9032417906</p>
             </div>
 
             <div class="contact-method">
-                <h3>✉️ Email</h3>
+                <h3><i class="fas fa-envelope text-primary me-2"></i>Email</h3>
                 <p>adithiraj.uppu.17@gmail.com</p>
             </div>
 
             <div class="contact-method">
-                <h3>⏰ Business Hours</h3>
+                <h3><i class="fas fa-clock text-primary me-2"></i>Business Hours</h3>
                 <p>Monday - Friday: 9:00 AM - 6:00 PM<br>
-                Saturday: 10:00 AM - 4:00 PM<br>
-                Sunday: Closed</p>
+                    Saturday: 10:00 AM - 4:00 PM<br>
+                    Sunday: Closed</p>
             </div>
         </div>
 
@@ -268,13 +159,9 @@
                 <label for="message">Message</label>
                 <textarea id="message" name="message" required placeholder="Tell us how we can help..."></textarea>
 
-                <button type="submit">Send Message</button>
+                <button type="submit" class="btn-send">Send Message</button>
             </form>
         </div>
-    </main>
-
-    <footer>
-        <p>&copy; 2025 ARound the World | All Rights Reserved</p>
-    </footer>
-</body>
-</html>
+    </div>
+</div>
+{% endblock %}

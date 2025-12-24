@@ -1,189 +1,176 @@
+{% extends 'shop/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>{{ product.title }} | VirtualJourney</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <style>
-    .experience-hero {
-      background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('{{ product.image.url }}');
-      background-size: cover;
-      background-position: center;
-      height: 50vh;
-      display: flex;
-      align-items: flex-end;
-      color: white;
-      padding: 2rem;
-    }
-    .video-embed {
-      border-radius: 15px;
-      overflow: hidden;
-      background: #000;
-    }
-    .booking-card {
-      background: white;
-      border-radius: 15px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-      padding: 2rem;
-    }
-  </style>
-</head>
-<body>
 
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg" style="background: linear-gradient(to right, #2c3e50, #3498db); padding: 1rem;">
-  <div class="container">
-    <a class="navbar-brand text-white fw-bold" href="#">ARound the World</a>
-    <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-      <ul class="navbar-nav">
-        <li class="nav-item"><a class="nav-link text-white fw-semibold" href="{% url 'product_list' %}">Experience</a></li>
-        <li class="nav-item"><a class="nav-link text-white fw-semibold" href="{% url 'ar_shop' %}">AR Shop</a></li>
-        <li class="nav-item"><a class="nav-link text-white fw-semibold" href="{% url 'about' %}">About</a></li>
-        <li class="nav-item"><a class="nav-link text-white fw-semibold" href="{% url 'contact' %}">Contact</a></li>
-        <li class="nav-item"><a class="nav-link text-white fw-semibold" href="{% url 'cart' %}">Cart</a></li>
-      </ul>
-      {% if user.is_authenticated %}
-      <form action="{% url 'logout' %}" method="post" class="d-flex">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-outline-light">Logout</button>
-      </form>
-      {% else %}
-      <a href="{% url 'login' %}" class="btn btn-outline-light">Login</a>
-      {% endif %}
-    </div>
-  </div>
-</nav>
+{% block title %}{{ product.name }} | ARound the World{% endblock %}
 
-<!-- Hero Section -->
-<section class="experience-hero">
+{% block extra_css %}
+<style>
+  .experience-hero {
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+    url('{{ product.image.url }}');
+    background-size: cover;
+    background-position: center;
+    height: 50vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+    border-radius: 0 0 30px 30px;
+  }
+
+  .video-embed {
+    border-radius: 15px;
+    overflow: hidden;
+    background: #000;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  }
+
+  .booking-card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    padding: 2rem;
+    position: sticky;
+    top: 100px;
+  }
+
+  .info-card {
+    background: white;
+    border-radius: 15px;
+    padding: 1.5rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    height: 100%;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="experience-hero mb-5">
   <div class="container">
-    <h1 class="display-4">{{ product.title }}</h1>
-    <div class="d-flex gap-3 align-items-center">
-      <span class="badge bg-danger"><i class="fas fa-video me-2"></i>Video Tour</span>
-      <span class="badge bg-success"><i class="fas fa-users me-2"></i>Multi-user AR</span>
+    <h1 class="display-3 fw-bold mb-3">{{ product.name }}</h1>
+    <div class="d-flex gap-3 justify-content-center">
+      <span class="badge bg-danger px-3 py-2"><i class="fas fa-video me-2"></i>Video Tour</span>
+      <span class="badge bg-success px-3 py-2"><i class="fas fa-vr-cardboard me-2"></i>AR Experience</span>
     </div>
   </div>
 </section>
 
-<main class="container my-5">
+<div class="container pb-5">
   {% if messages %}
-    <div class="mb-4">
-      {% for message in messages %}
-        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-      {% endfor %}
+  <div class="mb-4">
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+      {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
+    {% endfor %}
+  </div>
   {% endif %}
 
   <div class="row g-5">
-    <!-- Video Display -->
     <div class="col-lg-8">
-      <div class="video-embed ratio ratio-16x9 shadow">
+      <div class="video-embed ratio ratio-16x9 mb-5">
         {% if product.video_url %}
-          <iframe src="{{ product.video_url }}" frameborder="0" allowfullscreen title="{{ product.title }} Tour"></iframe>
+        <iframe src="{{ product.video_url }}" frameborder="0" allowfullscreen title="{{ product.name }} Tour"></iframe>
         {% else %}
-          <div class="d-flex align-items-center justify-content-center text-white" style="height: 100%;">
-            <p class="fs-5 text-center">No video available for this experience.</p>
+        <div class="d-flex align-items-center justify-content-center text-white bg-dark">
+          <div class="text-center">
+            <i class="fas fa-video-slash fa-3x mb-3 opacity-50"></i>
+            <p class="fs-5">No teaser video available for this destination.</p>
           </div>
+        </div>
         {% endif %}
       </div>
 
-      <div class="mt-4">
-        <h3>About This Experience</h3>
-        <p>{{ product.description }}</p>
-        <div class="row mt-4">
+      <div class="mb-5">
+        <h3 class="fw-bold mb-4">About This Destination</h3>
+        <p class="lead text-muted line-height-lg">{{ product.description }}</p>
+
+        <div class="row mt-5 g-4">
           <div class="col-md-6">
-            <h5><i class="fas fa-map-marker-alt me-2"></i>Location</h5>
-            <ul class="list-unstyled">
-              <li>Country: {{ product.location }}</li>
-              <li>Best Time: {{ product.season }}</li>
-            </ul>
+            <div class="info-card">
+              <h5 class="fw-bold mb-3 text-primary"><i class="fas fa-map-marked-alt me-2"></i>Location</h5>
+              <p class="mb-1 text-dark"><strong>Country:</strong> {{ product.location|default:"Global" }}</p>
+              <p class="mb-0 text-dark"><strong>Best Season:</strong> {{ product.season|default:"All Year" }}</p>
+            </div>
           </div>
           <div class="col-md-6">
-            <h5><i class="fas fa-info-circle me-2"></i>Highlights</h5>
-            <ul>
-              <li>Video Guided Tour</li>
-              <li>Interactive AR</li>
-              <li>Multi-language Support</li>
-            </ul>
+            <div class="info-card">
+              <h5 class="fw-bold mb-3 text-primary"><i class="fas fa-star me-2"></i>Experience Highlights</h5>
+              <ul class="list-unstyled mb-0">
+                <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Guided 3D Video Tour</li>
+                <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Interactive AR Markers</li>
+                <li class="mb-0"><i class="fas fa-check-circle text-success me-2"></i>Virtual Reality Support</li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
+
+      <h3 class="fw-bold mb-4">Gallery</h3>
+      <div class="row g-3">
+        {% if product.images.all %}
+        {% for img in product.images.all %}
+        <div class="col-md-4">
+          <img src="{{ img.image.url }}" class="img-fluid rounded-3 shadow-sm" alt="Gallery Image"
+            style="height: 200px; width: 100%; object-fit: cover;">
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="col-12">
+          <p class="text-muted italic"><i class="far fa-images me-2"></i>Additional images coming soon.</p>
+        </div>
+        {% endif %}
+      </div>
     </div>
-    <!-- Booking -->
+
     <div class="col-lg-4">
       <div class="booking-card">
-        <h3 class="mb-4">Book This Experience</h3>
+        <h3 class="fw-bold mb-2">Book Your Tour</h3>
+        <p class="text-muted small mb-4">Experience it from the comfort of your home</p>
+
         <div class="d-flex justify-content-between align-items-center mb-4">
-          <span class="h4 text-primary">₹{{ product.price }}</span>
-          <span class="badge bg-warning text-dark">30% Off</span>
+          <div>
+            <span class="fs-3 fw-bold text-primary">₹{{ product.price }}</span>
+            <span class="text-muted small ms-1">/ person</span>
+          </div>
+          <span class="badge bg-warning text-dark px-3 py-2">Limited Offer</span>
         </div>
 
         <form method="POST" action="{% url 'add_to_cart' product.id %}">
           {% csrf_token %}
-          <input type="hidden" name="product_type" value="regular">
-
           <div class="mb-3">
-              <label for="date" class="form-label">Select Date</label>
-              <input type="date" id="date" name="date" class="form-control" required>
+            <label class="form-label fw-semibold">Tour Date</label>
+            <input type="date" name="date" class="form-control" required>
           </div>
 
           <div class="mb-3">
-              <label for="time_slot" class="form-label">Select Time Slot</label>
-              <select id="time_slot" name="time_slot" class="form-control" required>
-                  <option value="">-- Select Time Slot --</option>
-                  <option value="9 AM - 11 AM">9 AM - 11 AM</option>
-                  <option value="12 PM - 2 PM">12 PM - 2 PM</option>
-                  <option value="3 PM - 5 PM">3 PM - 5 PM</option>
-                  <option value="6 PM - 8 PM">6 PM - 8 PM</option>
-              </select>
-          </div>
-
-          <div class="mb-4">
-            <label class="form-label">Participants</label>
-            <select class="form-select" name="quantity">
-              <option value="1">1 Person</option>
-              <option value="2">2 People</option>
-              <option value="4">Group (4-6)</option>
+            <label class="form-label fw-semibold">Preferred Time</label>
+            <select name="time_slot" class="form-select" required>
+              <option value="">Choose a slot</option>
+              <option>Morning (9 AM - 11 AM)</option>
+              <option>Lunch (12 PM - 2 PM)</option>
+              <option>Afternoon (3 PM - 5 PM)</option>
+              <option>Evening (6 PM - 8 PM)</option>
             </select>
           </div>
 
-          <button class="btn btn-primary w-100 py-3" type="submit">
+          <div class="mb-4">
+            <label class="form-label fw-semibold">Travelers</label>
+            <input type="number" name="quantity" class="form-control" value="1" min="1" max="10">
+          </div>
+
+          <button type="submit" class="btn btn-primary w-100 py-3 fw-bold shadow-sm">
             <i class="fas fa-shopping-cart me-2"></i>Add to Cart
           </button>
         </form>
 
-        <hr class="my-4">
-        <div class="text-center">
-          <small class="text-muted">Need help? <a href="{% url 'contact' %}">Chat with us</a></small>
-          
+        <div class="text-center mt-4">
+          <p class="small text-muted mb-0"><i class="fas fa-shield-alt me-1"></i>Secure Payment & Instant Access</p>
         </div>
       </div>
     </div>
-    <!-- Gallery -->
-      <h4 class="mt-5 mb-3">Gallery</h4>
-      <div class="row">
-        {% if product.images.all %}
-          {% for img in product.images.all %}
-            <div class="col-md-4 mb-3">
-              <div class="card">
-                <img src="{{ img.image.url }}" class="card-img-top" alt="Gallery Image">
-              </div>
-            </div>
-          {% endfor %}
-        {% else %}
-          <p>No additional images available.</p>
-        {% endif %}
-      </div>
-    </div>
   </div>
-</main>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+</div>
+{% endblock %}

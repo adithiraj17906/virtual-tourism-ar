@@ -1,205 +1,151 @@
+{% extends 'shop/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ product.title }} | ARound the world AR</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #eef2f3;
-            color: #333;
-            padding-top: 76px;
-        }
-        .navbar {
-            background: linear-gradient(135deg, #2c3e50, #3498db) !important;
-            padding: 20px 0;
-        }
-        .nav-link {
-            color: white !important;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-        .nav-link:hover {
-            transform: translateY(-2px);
-            opacity: 0.8;
-        }
-        .product-card {
-            display: flex;
-            flex-wrap: wrap;
-            background: #fff;
-            border-radius: 20px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            overflow: hidden;
-            margin-bottom: 30px;
-        }
-        .product-card img {
-            width: 50%;
-            object-fit: cover;
-        }
-        .product-details {
-            padding: 30px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            width: 50%;
-        }
-        .product-details h2 {
-            color: #2c3e50;
-            margin-bottom: 15px;
-        }
-        .product-details p {
-            margin-bottom: 20px;
-        }
-        .ar-btn {
-            background: linear-gradient(135deg, #3498db, #2980b9);
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 10px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            text-decoration: none;
-        }
-        .ar-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-        .feature-card, .review-section {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            margin-bottom: 30px;
-        }
-        .price-tag {
-            font-size: 2rem;
-            color: #2ecc71;
-            font-weight: 600;
-        }
-        footer {
-            text-align: center;
-            padding: 20px;
-            background-color: #333;
-            color: #fff;
-        }
-        @media (max-width: 768px) {
-            .product-card {
-                flex-direction: column;
-            }
-            .product-card img, .product-details {
-                width: 100%;
-            }
-        }
-    </style>
-</head>
-<body>
 
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg fixed-top">
-        <div class="container">
-            <a class="navbar-brand text-white" href="{% url 'product_list' %}">
-                ARound the world
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="{% url 'product_list' %}">Experience</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'cart' %}">Cart</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'ar_shop' %}">AR Shop</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Contact</a></li>
-                </ul>
+{% block title %}{{ product.title }} | AR Shop | ARound the World{% endblock %}
+
+{% block extra_css %}
+<style>
+    .product-main-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+        margin-top: 2rem;
+    }
+
+    .product-image-container {
+        padding: 0;
+        background-color: #f8f9fa;
+    }
+
+    .product-image-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        min-height: 500px;
+    }
+
+    .detail-container {
+        padding: 3rem;
+    }
+
+    .ar-btn-group .btn {
+        padding: 12px 24px;
+        border-radius: 12px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn-android {
+        background-color: #3DDC84;
+        color: #073042;
+        border: none;
+    }
+
+    .btn-ios {
+        background-color: #000;
+        color: #fff;
+        border: none;
+    }
+
+    .ar-btn-group .btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .qr-container {
+        background: #f1f3f5;
+        border-radius: 15px;
+        padding: 1.5rem;
+        display: inline-block;
+    }
+
+    .feature-list i {
+        width: 25px;
+        color: #3498db;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'ar_shop' %}">AR Shop</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ product.title }}</li>
+        </ol>
+    </nav>
+
+    <div class="product-main-card">
+        <div class="row g-0">
+            <div class="col-lg-6 product-image-container">
+                <img src="{{ product.image.url }}" alt="{{ product.title }}">
             </div>
-        </div>
-    {% if user.is_authenticated %}
-    <form action="{% url 'logout' %}" method="post" class="d-flex">
-      {% csrf_token %}
-      <button type="submit" class="btn btn-outline-light">Logout</button>
-    </form>
-  {% else %}
-    <a href="{% url 'login' %}" class="btn btn-outline-light">Login</a>
-  {% endif %}
-</div>
-</div>
-</nav>
-    <!-- Main Content -->
-    <main class="container my-5">
-        <div class="product-card">
-            <!-- Image -->
-            <img src="{{ product.image.url }}" alt="{{ product.title }}">
+            <div class="col-lg-6">
+                <div class="detail-container">
+                    <span class="badge bg-primary px-3 py-2 mb-3">AR READY</span>
+                    <h1 class="fw-bold mb-3">{{ product.title }}</h1>
 
-            <!-- Details -->
-            <div class="product-details">
-                <h2>Experience {{ product.title }} in AR</h2>
-                <p>Scan the QR code or click the button below to launch the AR experience.</p>
-
-                <!-- AR Buttons -->
-                <div class="d-flex flex-wrap gap-2 mb-4">
-                    <a href="intent://arvr.google.com/scene-viewer/1.0?file={{ product.ar_link }}&mode=ar_preferred#Intent;scheme=https;package=com.google.ar.core;action=android.intent.action.VIEW;end;" class="ar-btn">
-                        <i class="fab fa-android me-1"></i> Launch Android AR View
-                    </a>
-                    <a rel="ar" href="{{ product.ar_link }}" class="ar-btn">
-                        <i class="fab fa-apple me-1"></i> Launch iOS AR View
-                    </a>
-                </div>
-
-                <!-- QR Code -->
-                <div class="text-center mb-4">
-                    <h5>Scan to View in AR:</h5>
-                    <img src="data:image/png;base64,{{ qr_code_base64 }}" alt="QR Code for AR" class="img-fluid" style="max-width: 200px;">
-                </div>
-
-                <!-- Product Description -->
-                <div class="feature-card">
-                    <h3>About This AR Experience</h3>
-                    <p>{{ product.description }}</p>
-                </div>
-
-                <!-- Reviews -->
-                <div class="review-section">
-                    <h3>Reviews & Feedback</h3>
-                    <p>{{ product.review }}</p>
-                </div>
-
-                <!-- Purchase Section -->
-                <div class="feature-card">
-                    <h3>Purchase AR Experience</h3>
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <span class="price-tag">₹{{ product.price }}</span>
-                        <span class="badge bg-warning">Limited Time</span>
+                    <div class="d-flex align-items-center mb-4">
+                        <span class="fs-2 fw-bold text-success">₹{{ product.price }}</span>
+                        <div class="ms-4 text-warning">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                            <span class="text-muted ms-1">({{ product.review }}/5)</span>
+                        </div>
                     </div>
-                    <ul class="list-unstyled mb-4">
-                        <li><i class="fas fa-check-circle text-success me-2"></i> Instant Access</li>
-                        <li><i class="fas fa-check-circle text-success me-2"></i> High Quality 3D Models</li>
-                        <li><i class="fas fa-check-circle text-success me-2"></i> Interactive Features</li>
-                        <li><i class="fas fa-check-circle text-success me-2"></i> 24/7 Support</li>
-                    </ul>
-                    
-                    <!-- Working Add to Cart Form -->
+
+                    <p class="text-muted fs-5 mb-5">{{ product.description }}</p>
+
+                    <h5 class="fw-bold mb-3"><i class="fas fa-vr-cardboard me-2"></i>Experience in Augmented Reality
+                    </h5>
+                    <p class="small text-muted mb-4">Use your phone to place this object right in your room!</p>
+
+                    <div class="ar-btn-group d-flex flex-wrap gap-3 mb-5">
+                        <a href="intent://arvr.google.com/scene-viewer/1.0?file={{ product.ar_link }}&mode=ar_preferred#Intent;scheme=https;package=com.google.ar.core;action=android.intent.action.VIEW;end;"
+                            class="btn btn-android">
+                            <i class="fab fa-android me-2"></i>Android View
+                        </a>
+                        <a rel="ar" href="{{ product.ar_link }}" class="btn btn-ios">
+                            <i class="fab fa-apple me-2"></i>iOS View
+                        </a>
+                    </div>
+
+                    <div class="text-center qr-container mb-5">
+                        <p class="small fw-bold mb-3">Scan to launch AR experience</p>
+                        <img src="data:image/png;base64,{{ qr_code_base64 }}" alt="AR QR Code" class="img-fluid"
+                            style="width: 180px;">
+                    </div>
+
+                    <hr class="my-5">
+
                     <form method="post" action="{% url 'add_to_cart' product.id %}">
                         {% csrf_token %}
-                        <button class="btn btn-primary w-100 py-3">
-                          <i class="fas fa-shopping-cart me-2"></i>Add to Cart
-                        </button>
-                      </form>
+                        <div class="row g-3 align-items-center">
+                            <div class="col-md-4">
+                                <label class="small fw-bold text-muted mb-2 d-block text-uppercase">Quantity</label>
+                                <input type="number" name="quantity" class="form-control py-3" value="1" min="1">
+                            </div>
+                            <div class="col-md-8">
+                                <label class="small fw-bold text-muted mb-2 d-block text-uppercase">&nbsp;</label>
+                                <button type="submit" class="btn btn-primary w-100 py-3 fw-bold">
+                                    <i class="fas fa-shopping-cart me-2"></i>Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <ul class="list-unstyled feature-list mt-5 text-muted small">
+                        <li class="mb-2"><i class="fas fa-check-circle"></i> Instant AR marker recognition</li>
+                        <li class="mb-2"><i class="fas fa-check-circle"></i> High-resolution 3D textures</li>
+                        <li><i class="fas fa-check-circle"></i> Compatible with Android & iOS</li>
+                    </ul>
                 </div>
             </div>
         </div>
-    </main>
-
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2025 ARound the world. All rights reserved.</p>
-    </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+    </div>
+</div>
+{% endblock %}
