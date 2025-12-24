@@ -6,9 +6,9 @@ __pycache__/
 *.pyc
 
 # Django local files
-db.sqlite3
+# db.sqlite3
 staticfiles/
-media/
+# media/
 
 # OS
 .DS_Store
