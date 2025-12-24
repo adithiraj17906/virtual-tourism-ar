@@ -85,16 +85,13 @@
                     <div class="col-md-5">
                         <h5 class="mb-1 fw-bold">
                             {% if item.product %}
-                            {{ item.product.name }}
+                            {{ item.product.title }}
                             <span class="badge badge-dest ms-2">DESTINATION</span>
                             {% else %}
                             {{ item.ar_product.title }}
                             <span class="badge badge-ar ms-2">ESSENTIALS</span>
                             {% endif %}
                         </h5>
-                        <p class="text-muted small mb-0"><i class="far fa-calendar-alt me-1"></i>{{ item.date_selected
-                            }}</p>
-                        <p class="text-muted small mb-0"><i class="far fa-clock me-1"></i>{{ item.time_slot }}</p>
                     </div>
                     <div class="col-md-2 text-center">
                         <span class="fw-medium">{{ item.quantity }} x</span>
