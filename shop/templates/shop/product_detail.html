@@ -140,23 +140,6 @@
 
         <form method="POST" action="{% url 'add_to_cart' product.id %}">
           {% csrf_token %}
-          <div class="mb-3">
-            <label class="form-label fw-semibold">Tour Date</label>
-            <input type="date" name="date_selected" class="form-control" required>
-
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label fw-semibold">Preferred Time</label>
-            <select name="time_slot" class="form-select" required>
-              <option value="">Choose a slot</option>
-              <option>Morning (9 AM - 11 AM)</option>
-              <option>Lunch (12 PM - 2 PM)</option>
-              <option>Afternoon (3 PM - 5 PM)</option>
-              <option>Evening (6 PM - 8 PM)</option>
-            </select>
-          </div>
-
           <div class="mb-4">
             <label class="form-label fw-semibold">Travelers</label>
             <input type="number" name="quantity" class="form-control" value="1" min="1" max="10">
