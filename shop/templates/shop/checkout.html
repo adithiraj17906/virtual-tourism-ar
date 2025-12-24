@@ -79,7 +79,13 @@
             </div>
             {% endif %}
           </div>
-          <span class="fw-bold text-primary">₹{{ item.total_price }}</span>
+          <div class="text-end">
+            {% if item.date_selected %}
+            <div class="small text-muted"><i class="far fa-calendar-alt me-1"></i>{{ item.date_selected }}</div>
+            <div class="small text-muted"><i class="far fa-clock me-1"></i>{{ item.time_slot }}</div>
+            {% endif %}
+            <span class="fw-bold text-primary">₹{{ item.total_price }}</span>
+          </div>
         </li>
         {% endfor %}
         <li class="list-group-item d-flex justify-content-between py-3 bg-light">
