@@ -64,7 +64,7 @@ def add_to_cart(request, product_id):
             selected_product = get_object_or_404(Product, id=product_id)
             ar_product = None
             is_ar = False
-            product_name = selected_product.name
+            product_name = selected_product.title
             product_price = selected_product.price
 
         date = request.POST.get('date_selected') or request.POST.get('date')
