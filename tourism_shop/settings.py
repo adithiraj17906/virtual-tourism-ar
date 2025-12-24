@@ -24,12 +24,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-5ky_0_3-5ky_0_3-5ky_0_3-5ky_0_3-5ky_0_3')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# Set to False for production deployment
-DEBUG = os.environ.get('DEBUG', 'True') == 'True'
+# Set to False for production deployment on PythonAnywhere
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-# Add your PythonAnywhere domain here
-# Example: ALLOWED_HOSTS = ['yourusername.pythonanywhere.com', 'localhost', '127.0.0.1']
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(',')
+# PythonAnywhere domain configuration
+# For local development, also allows localhost
+ALLOWED_HOSTS = ['adithirajuppu17.pythonanywhere.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
